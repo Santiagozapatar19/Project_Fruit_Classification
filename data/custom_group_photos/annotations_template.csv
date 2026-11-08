@@ -1,0 +1,4 @@
+filename,fruit_type,quality_label,size_label,capture_distance_cm,annotator,notes
+sample_apple_good_medium_01.jpg,Apple,Good,Medium,28,Integrante_1,Ejemplo de registro en plantilla
+sample_banana_medium_large_01.jpg,Banana,Medium,Large,28,Integrante_2,Manchas leves de madurez
+sample_lime_bad_small_01.jpg,Lime,Bad,Small,28,Integrante_3,Deshidratacion y mancha oscura

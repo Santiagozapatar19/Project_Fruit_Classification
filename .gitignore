@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Raw external datasets (if placed inside repo)
+raw_data/
+Good Quality_Fruits/
+Bad Quality_Fruits/
+Mixed Qualit_Fruits/
+
+# Large model weights (keep small metadata/metrics in git)
+experiments/checkpoints/*.h5
+experiments/checkpoints/*.keras
+experiments/checkpoints/*.pt
+experiments/checkpoints/*.pth
+experiments/checkpoints/*.onnx
