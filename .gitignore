@@ -15,8 +15,9 @@ Thumbs.db
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
 
-# Raw external datasets (if placed inside repo)
+# Raw and intermediate processed datasets (crops)
 raw_data/
+data/processed/
 Good Quality_Fruits/
 Bad Quality_Fruits/
 Mixed Qualit_Fruits/
