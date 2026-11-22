@@ -1,0 +1,245 @@
+{
+  "label_order": [
+    "Bad",
+    "Good",
+    "Mixed_source"
+  ],
+  "mixed_label_note": "Etiqueta de origen débil de fotos con calidades mezcladas",
+  "sklearn_version": "1.7.2",
+  "source_inventory": {
+    "Good": 11664,
+    "Bad": 6788,
+    "Mixed": 1074
+  },
+  "seed": 42,
+  "excluded_variants": 4752,
+  "unreadable_images": [],
+  "mixed_photos_without_crops": 58,
+  "mixed_photos_with_crops": 1016,
+  "undated_photos": 793,
+  "capture_groups_per_split": {
+    "test": 32,
+    "train": 146,
+    "val": 32
+  },
+  "split_counts": {
+    "train": {
+      "Bad": 5059,
+      "Good": 4996,
+      "Mixed_source": 1908
+    },
+    "val": {
+      "Bad": 910,
+      "Good": 1174,
+      "Mixed_source": 73
+    },
+    "test": {
+      "Bad": 819,
+      "Good": 742,
+      "Mixed_source": 91
+    }
+  },
+  "split_counts_by_fruit": [
+    {
+      "split": "test",
+      "fruit": "Apple",
+      "Bad": 100,
+      "Good": 151,
+      "Mixed_source": 0
+    },
+    {
+      "split": "test",
+      "fruit": "Banana",
+      "Bad": 78,
+      "Good": 0,
+      "Mixed_source": 0
+    },
+    {
+      "split": "test",
+      "fruit": "Guava",
+      "Bad": 111,
+      "Good": 81,
+      "Mixed_source": 33
+    },
+    {
+      "split": "test",
+      "fruit": "Lime",
+      "Bad": 146,
+      "Good": 129,
+      "Mixed_source": 58
+    },
+    {
+      "split": "test",
+      "fruit": "Orange",
+      "Bad": 255,
+      "Good": 243,
+      "Mixed_source": 0
+    },
+    {
+      "split": "test",
+      "fruit": "Pomegranate",
+      "Bad": 129,
+      "Good": 138,
+      "Mixed_source": 0
+    },
+    {
+      "split": "train",
+      "fruit": "Apple",
+      "Bad": 901,
+      "Good": 790,
+      "Mixed_source": 295
+    },
+    {
+      "split": "train",
+      "fruit": "Banana",
+      "Bad": 867,
+      "Good": 893,
+      "Mixed_source": 485
+    },
+    {
+      "split": "train",
+      "fruit": "Guava",
+      "Bad": 692,
+      "Good": 1039,
+      "Mixed_source": 200
+    },
+    {
+      "split": "train",
+      "fruit": "Lime",
+      "Bad": 893,
+      "Good": 600,
+      "Mixed_source": 422
+    },
+    {
+      "split": "train",
+      "fruit": "Orange",
+      "Bad": 835,
+      "Good": 809,
+      "Mixed_source": 278
+    },
+    {
+      "split": "train",
+      "fruit": "Pomegranate",
+      "Bad": 871,
+      "Good": 865,
+      "Mixed_source": 228
+    },
+    {
+      "split": "val",
+      "fruit": "Apple",
+      "Bad": 140,
+      "Good": 208,
+      "Mixed_source": 0
+    },
+    {
+      "split": "val",
+      "fruit": "Banana",
+      "Bad": 142,
+      "Good": 220,
+      "Mixed_source": 0
+    },
+    {
+      "split": "val",
+      "fruit": "Guava",
+      "Bad": 326,
+      "Good": 32,
+      "Mixed_source": 25
+    },
+    {
+      "split": "val",
+      "fruit": "Lime",
+      "Bad": 46,
+      "Good": 365,
+      "Mixed_source": 0
+    },
+    {
+      "split": "val",
+      "fruit": "Orange",
+      "Bad": 69,
+      "Good": 164,
+      "Mixed_source": 0
+    },
+    {
+      "split": "val",
+      "fruit": "Pomegranate",
+      "Bad": 187,
+      "Good": 185,
+      "Mixed_source": 48
+    }
+  ],
+  "validation_trials": [
+    {
+      "max_depth": 10,
+      "min_samples_leaf": 6,
+      "val_f1_macro": 0.6112927130193617
+    },
+    {
+      "max_depth": 16,
+      "min_samples_leaf": 4,
+      "val_f1_macro": 0.6134691092769358
+    },
+    {
+      "max_depth": 24,
+      "min_samples_leaf": 2,
+      "val_f1_macro": 0.6123952375773503
+    }
+  ],
+  "selected_hyperparameters": {
+    "n_estimators": 160,
+    "max_depth": 16,
+    "min_samples_leaf": 4
+  },
+  "test_f1_macro": 0.6615631831013936,
+  "test_majority_f1_macro": 0.2209631728045326,
+  "test_accuracy": 0.7203389830508474,
+  "test_classification_report": {
+    "Bad": {
+      "precision": 0.8578274760383386,
+      "recall": 0.6556776556776557,
+      "f1-score": 0.7432525951557093,
+      "support": 819.0
+    },
+    "Good": {
+      "precision": 0.6829268292682927,
+      "recall": 0.7924528301886793,
+      "f1-score": 0.7336244541484717,
+      "support": 742.0
+    },
+    "Mixed_source": {
+      "precision": 0.3939393939393939,
+      "recall": 0.7142857142857143,
+      "f1-score": 0.5078125,
+      "support": 91.0
+    },
+    "accuracy": 0.7203389830508474,
+    "macro avg": {
+      "precision": 0.6448978997486751,
+      "recall": 0.7208054000506832,
+      "f1-score": 0.6615631831013936,
+      "support": 1652.0
+    },
+    "weighted avg": {
+      "precision": 0.7537172488141388,
+      "recall": 0.7203389830508474,
+      "f1-score": 0.725958933359983,
+      "support": 1652.0
+    }
+  },
+  "test_confusion_matrix": [
+    [
+      537,
+      248,
+      34
+    ],
+    [
+      88,
+      588,
+      66
+    ],
+    [
+      1,
+      25,
+      65
+    ]
+  ]
+}

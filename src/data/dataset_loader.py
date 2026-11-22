@@ -203,9 +203,14 @@ def extract_image_features(image_path: str | Path) -> Dict[str, float]:
     """
     with Image.open(image_path) as img:
         img_rgb = img.convert("RGB")
-        width, height = img_rgb.size
         rgb_arr = np.asarray(img_rgb, dtype=np.float32) / 255.0
 
+    return extract_rgb_features(rgb_arr)
+
+
+def extract_rgb_features(rgb_arr: np.ndarray) -> Dict[str, float]:
+    """Extrae descriptores de una imagen RGB normalizada en [0, 1]."""
+    height, width, _ = rgb_arr.shape
     mask = segment_fruit_foreground(rgb_arr)
     hsv_arr = rgb_to_hsv_array(rgb_arr)
 
