@@ -575,7 +575,7 @@
     }
   },
   "size_evaluation": {
-    "n_anotadas": 0,
+    "n_anotadas": 60,
     "n_muestra_marcada": 60,
     "n_calibracion_local": 652,
     "umbrales_locales": {
@@ -606,7 +606,33 @@
         "Medium": 85,
         "Large": 44
       },
-      "proporcion_small": 0.8188202247191011
+      "proporcion_small": 0.8188202247191011,
+      "accuracy": 0.38333333333333336,
+      "f1_macro": 0.32916206600417125,
+      "confusion_matrix": [
+        [
+          12,
+          1,
+          0
+        ],
+        [
+          27,
+          10,
+          3
+        ],
+        [
+          5,
+          1,
+          1
+        ]
+      ],
+      "accuracy_por_fruta": {
+        "Apple": 0.4166666666666667,
+        "Banana": 0.3333333333333333,
+        "Guava": 0.3333333333333333,
+        "Lime": 0.25,
+        "Orange": 0.5833333333333334
+      }
     },
     "local": {
       "distribucion_predicha": {
@@ -614,7 +640,33 @@
         "Medium": 229,
         "Large": 245
       },
-      "proporcion_small": 0.3342696629213483
+      "proporcion_small": 0.3342696629213483,
+      "accuracy": 0.3,
+      "f1_macro": 0.3131425240193276,
+      "confusion_matrix": [
+        [
+          8,
+          4,
+          1
+        ],
+        [
+          13,
+          6,
+          21
+        ],
+        [
+          0,
+          3,
+          4
+        ]
+      ],
+      "accuracy_por_fruta": {
+        "Apple": 0.25,
+        "Banana": 0.3333333333333333,
+        "Guava": 0.3333333333333333,
+        "Lime": 0.16666666666666666,
+        "Orange": 0.4166666666666667
+      }
     }
   },
   "overfitting_table_f1_macro": {
