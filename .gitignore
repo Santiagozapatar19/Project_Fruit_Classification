@@ -28,3 +28,6 @@ experiments/checkpoints/*.keras
 experiments/checkpoints/*.pt
 experiments/checkpoints/*.pth
 experiments/checkpoints/*.onnx
+
+# Descarga cruda de fotos del grupo (Drive); se normalizan a data/custom_group_photos/
+proyectoAPO-*/
