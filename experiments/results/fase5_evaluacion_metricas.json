@@ -1,0 +1,789 @@
+{
+  "checkpoints_dir": "experiments/checkpoints",
+  "sklearn_version": "1.7.2",
+  "feature_names": [
+    "area_ratio",
+    "d_norm",
+    "bbox_width_norm",
+    "bbox_height_norm",
+    "bbox_aspect_ratio",
+    "mean_R",
+    "mean_G",
+    "mean_B",
+    "std_R",
+    "std_G",
+    "std_B",
+    "mean_H",
+    "mean_S",
+    "mean_V",
+    "std_H",
+    "std_S",
+    "std_V",
+    "laplacian_var",
+    "laplacian_abs_mean",
+    "sobel_mean",
+    "sobel_std",
+    "dark_pixel_ratio",
+    "necrotic_pixel_ratio",
+    "hue_bin_0",
+    "hue_bin_1",
+    "hue_bin_2",
+    "hue_bin_3",
+    "hue_bin_4",
+    "hue_bin_5",
+    "hue_bin_6",
+    "hue_bin_7"
+  ],
+  "class_order": [
+    "Bad",
+    "Good",
+    "Mixed"
+  ],
+  "datasets": {
+    "test_kaggle": {
+      "n": 2352,
+      "por_clase": {
+        "Good": 1021,
+        "Bad": 1012,
+        "Mixed": 319
+      }
+    },
+    "test_real": {
+      "n": 724,
+      "por_clase": {
+        "Good": 401,
+        "Mixed": 192,
+        "Bad": 131
+      },
+      "por_fruta": {
+        "Apple": 223,
+        "Banana": 152,
+        "Orange": 150,
+        "Guava": 117,
+        "Lime": 82
+      },
+      "variantes_aumentadas": 12,
+      "nota": "Medium del protocolo = Mixed del modelo; granadilla excluida por estar fuera de catálogo"
+    },
+    "fuera_de_catalogo": {
+      "n": 18,
+      "frutas": {
+        "Granadilla": 18
+      }
+    }
+  },
+  "reproducibilidad_extractor": {
+    "n_imagenes": 297,
+    "recortes_mixed_no_reproducibles": 3,
+    "mediana_diferencia_en_desviaciones": 0.006798041851853412,
+    "p95_diferencia_en_desviaciones": 0.23705951780697712,
+    "acuerdo_de_prediccion": {
+      "Regresión logística": 0.9865319865319865,
+      "SVM RBF": 0.98989898989899,
+      "Random Forest": 0.9865319865319865,
+      "MLP": 0.9865319865319865
+    }
+  },
+  "models": {
+    "regresion_logistica": {
+      "name": "Regresión logística",
+      "checkpoint": "fase4_regresion_logistica.joblib",
+      "cv_f1_macro": 0.7911329218547096,
+      "val_f1_macro": 0.8495843870299603,
+      "val_different_source_f1_macro": 0.7689584361253378,
+      "test_kaggle": {
+        "n": 2352,
+        "accuracy": 0.8660714285714286,
+        "precision_macro": 0.840939300427555,
+        "recall_macro": 0.8738613286180344,
+        "f1_macro": 0.8544551920490946,
+        "report": {
+          "Bad": {
+            "precision": 0.8899803536345776,
+            "recall": 0.8952569169960475,
+            "f1-score": 0.8926108374384236,
+            "support": 1012.0
+          },
+          "Good": {
+            "precision": 0.8912354804646251,
+            "recall": 0.8266405484818805,
+            "f1-score": 0.8577235772357723,
+            "support": 1021.0
+          },
+          "Mixed": {
+            "precision": 0.7416020671834626,
+            "recall": 0.8996865203761756,
+            "f1-score": 0.8130311614730878,
+            "support": 319.0
+          },
+          "accuracy": 0.8660714285714286,
+          "macro avg": {
+            "precision": 0.840939300427555,
+            "recall": 0.8738613286180344,
+            "f1-score": 0.8544551920490946,
+            "support": 2352.0
+          },
+          "weighted avg": {
+            "precision": 0.8704007665238518,
+            "recall": 0.8660714285714286,
+            "f1-score": 0.8666729933483518,
+            "support": 2352.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            906,
+            84,
+            22
+          ],
+          [
+            99,
+            844,
+            78
+          ],
+          [
+            13,
+            19,
+            287
+          ]
+        ]
+      },
+      "test_real": {
+        "n": 724,
+        "accuracy": 0.5151933701657458,
+        "precision_macro": 0.30211499146030596,
+        "recall_macro": 0.3991484393342344,
+        "f1_macro": 0.34391234265023557,
+        "report": {
+          "Bad": {
+            "precision": 0.30409356725146197,
+            "recall": 0.3969465648854962,
+            "f1-score": 0.3443708609271523,
+            "support": 131.0
+          },
+          "Good": {
+            "precision": 0.6022514071294559,
+            "recall": 0.800498753117207,
+            "f1-score": 0.6873661670235546,
+            "support": 401.0
+          },
+          "Mixed": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 192.0
+          },
+          "accuracy": 0.5151933701657458,
+          "macro avg": {
+            "precision": 0.30211499146030596,
+            "recall": 0.3991484393342344,
+            "f1-score": 0.34391234265023557,
+            "support": 724.0
+          },
+          "weighted avg": {
+            "precision": 0.38858987785753224,
+            "recall": 0.5151933701657458,
+            "f1-score": 0.4430199112678209,
+            "support": 724.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            52,
+            59,
+            20
+          ],
+          [
+            80,
+            321,
+            0
+          ],
+          [
+            39,
+            153,
+            0
+          ]
+        ]
+      },
+      "granadilla_accuracy": 0.3888888888888889
+    },
+    "svm_rbf": {
+      "name": "SVM RBF",
+      "checkpoint": "fase4_svm_rbf.joblib",
+      "cv_f1_macro": 0.808478583839917,
+      "val_f1_macro": 0.9447759688816605,
+      "val_different_source_f1_macro": 0.9120662396936611,
+      "test_kaggle": {
+        "n": 2352,
+        "accuracy": 0.9549319727891157,
+        "precision_macro": 0.9453877531520849,
+        "recall_macro": 0.9530838600822463,
+        "f1_macro": 0.9491121146572553,
+        "report": {
+          "Bad": {
+            "precision": 0.9645320197044335,
+            "recall": 0.967391304347826,
+            "f1-score": 0.9659595461272817,
+            "support": 1012.0
+          },
+          "Good": {
+            "precision": 0.9592445328031809,
+            "recall": 0.9451518119490695,
+            "f1-score": 0.9521460286137149,
+            "support": 1021.0
+          },
+          "Mixed": {
+            "precision": 0.9123867069486404,
+            "recall": 0.9467084639498433,
+            "f1-score": 0.9292307692307692,
+            "support": 319.0
+          },
+          "accuracy": 0.9549319727891157,
+          "macro avg": {
+            "precision": 0.9453877531520849,
+            "recall": 0.9530838600822463,
+            "f1-score": 0.9491121146572553,
+            "support": 2352.0
+          },
+          "weighted avg": {
+            "precision": 0.9551642990856933,
+            "recall": 0.9549319727891157,
+            "f1-score": 0.9549816204421886,
+            "support": 2352.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            979,
+            28,
+            5
+          ],
+          [
+            32,
+            965,
+            24
+          ],
+          [
+            4,
+            13,
+            302
+          ]
+        ]
+      },
+      "test_real": {
+        "n": 724,
+        "accuracy": 0.4654696132596685,
+        "precision_macro": 0.32049450846724015,
+        "recall_macro": 0.3540930989955138,
+        "f1_macro": 0.3165975849904425,
+        "report": {
+          "Bad": {
+            "precision": 0.2185792349726776,
+            "recall": 0.3053435114503817,
+            "f1-score": 0.25477707006369427,
+            "support": 131.0
+          },
+          "Good": {
+            "precision": 0.5762376237623762,
+            "recall": 0.7256857855361596,
+            "f1-score": 0.6423841059602649,
+            "support": 401.0
+          },
+          "Mixed": {
+            "precision": 0.16666666666666666,
+            "recall": 0.03125,
+            "f1-score": 0.05263157894736842,
+            "support": 192.0
+          },
+          "accuracy": 0.4654696132596685,
+          "macro avg": {
+            "precision": 0.32049450846724015,
+            "recall": 0.3540930989955138,
+            "f1-score": 0.3165975849904425,
+            "support": 724.0
+          },
+          "weighted avg": {
+            "precision": 0.40290768910239455,
+            "recall": 0.4654696132596685,
+            "f1-score": 0.41585232848937137,
+            "support": 724.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            40,
+            74,
+            17
+          ],
+          [
+            97,
+            291,
+            13
+          ],
+          [
+            46,
+            140,
+            6
+          ]
+        ]
+      },
+      "granadilla_accuracy": 0.3333333333333333
+    },
+    "random_forest": {
+      "name": "Random Forest",
+      "checkpoint": "fase4_random_forest.joblib",
+      "cv_f1_macro": 0.8139620155547375,
+      "val_f1_macro": 0.9574340327395058,
+      "val_different_source_f1_macro": 0.9366049806135952,
+      "test_kaggle": {
+        "n": 2352,
+        "accuracy": 0.9600340136054422,
+        "precision_macro": 0.9603954431408441,
+        "recall_macro": 0.9533947966805485,
+        "f1_macro": 0.9567894917272338,
+        "report": {
+          "Bad": {
+            "precision": 0.9691542288557214,
+            "recall": 0.9624505928853755,
+            "f1-score": 0.9657907783837383,
+            "support": 1012.0
+          },
+          "Good": {
+            "precision": 0.9508670520231214,
+            "recall": 0.9666993143976493,
+            "f1-score": 0.9587178241864983,
+            "support": 1021.0
+          },
+          "Mixed": {
+            "precision": 0.9611650485436893,
+            "recall": 0.9310344827586207,
+            "f1-score": 0.945859872611465,
+            "support": 319.0
+          },
+          "accuracy": 0.9600340136054422,
+          "macro avg": {
+            "precision": 0.9603954431408441,
+            "recall": 0.9533947966805485,
+            "f1-score": 0.9567894917272338,
+            "support": 2352.0
+          },
+          "weighted avg": {
+            "precision": 0.9601322237257797,
+            "recall": 0.9600340136054422,
+            "f1-score": 0.9600172047541732,
+            "support": 2352.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            974,
+            36,
+            2
+          ],
+          [
+            24,
+            987,
+            10
+          ],
+          [
+            7,
+            15,
+            297
+          ]
+        ]
+      },
+      "test_real": {
+        "n": 724,
+        "accuracy": 0.5027624309392266,
+        "precision_macro": 0.2792407285494843,
+        "recall_macro": 0.3659680315750065,
+        "f1_macro": 0.31604914191691486,
+        "report": {
+          "Bad": {
+            "precision": 0.25170068027210885,
+            "recall": 0.2824427480916031,
+            "f1-score": 0.26618705035971224,
+            "support": 131.0
+          },
+          "Good": {
+            "precision": 0.5860215053763441,
+            "recall": 0.8154613466334164,
+            "f1-score": 0.6819603753910324,
+            "support": 401.0
+          },
+          "Mixed": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 192.0
+          },
+          "accuracy": 0.5027624309392266,
+          "macro avg": {
+            "precision": 0.2792407285494843,
+            "recall": 0.3659680315750065,
+            "f1-score": 0.31604914191691486,
+            "support": 724.0
+          },
+          "weighted avg": {
+            "precision": 0.3701207358723208,
+            "recall": 0.5027624309392266,
+            "f1-score": 0.42587930128304735,
+            "support": 724.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            37,
+            77,
+            17
+          ],
+          [
+            72,
+            327,
+            2
+          ],
+          [
+            38,
+            154,
+            0
+          ]
+        ]
+      },
+      "granadilla_accuracy": 0.1111111111111111
+    },
+    "mlp": {
+      "name": "MLP",
+      "checkpoint": "fase4_mlp.joblib",
+      "cv_f1_macro": 0.8006113521936812,
+      "val_f1_macro": 0.9724222584364526,
+      "val_different_source_f1_macro": 0.9629940038850714,
+      "test_kaggle": {
+        "n": 2352,
+        "accuracy": 0.9757653061224489,
+        "precision_macro": 0.9739696875324406,
+        "recall_macro": 0.9691248000788137,
+        "f1_macro": 0.9715057124283194,
+        "report": {
+          "Bad": {
+            "precision": 0.980276134122288,
+            "recall": 0.9822134387351779,
+            "f1-score": 0.981243830207305,
+            "support": 1012.0
+          },
+          "Good": {
+            "precision": 0.9736842105263158,
+            "recall": 0.9784524975514202,
+            "f1-score": 0.9760625305324866,
+            "support": 1021.0
+          },
+          "Mixed": {
+            "precision": 0.967948717948718,
+            "recall": 0.9467084639498433,
+            "f1-score": 0.9572107765451664,
+            "support": 319.0
+          },
+          "accuracy": 0.9757653061224489,
+          "macro avg": {
+            "precision": 0.9739696875324406,
+            "recall": 0.9691248000788137,
+            "f1-score": 0.9715057124283194,
+            "support": 2352.0
+          },
+          "weighted avg": {
+            "precision": 0.9757426308268559,
+            "recall": 0.9757653061224489,
+            "f1-score": 0.9757350499835755,
+            "support": 2352.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            994,
+            15,
+            3
+          ],
+          [
+            15,
+            999,
+            7
+          ],
+          [
+            5,
+            12,
+            302
+          ]
+        ]
+      },
+      "test_real": {
+        "n": 724,
+        "accuracy": 0.5027624309392266,
+        "precision_macro": 0.3529270593268959,
+        "recall_macro": 0.35940424860241255,
+        "f1_macro": 0.3214292781702424,
+        "report": {
+          "Bad": {
+            "precision": 0.2542372881355932,
+            "recall": 0.22900763358778625,
+            "f1-score": 0.24096385542168675,
+            "support": 131.0
+          },
+          "Good": {
+            "precision": 0.5645438898450946,
+            "recall": 0.8179551122194514,
+            "f1-score": 0.6680244399185336,
+            "support": 401.0
+          },
+          "Mixed": {
+            "precision": 0.24,
+            "recall": 0.03125,
+            "f1-score": 0.055299539170506916,
+            "support": 192.0
+          },
+          "accuracy": 0.5027624309392266,
+          "macro avg": {
+            "precision": 0.3529270593268959,
+            "recall": 0.35940424860241255,
+            "f1-score": 0.3214292781702424,
+            "support": 724.0
+          },
+          "weighted avg": {
+            "precision": 0.42233036543321223,
+            "recall": 0.5027624309392266,
+            "f1-score": 0.42826184666893674,
+            "support": 724.0
+          }
+        },
+        "confusion_matrix": [
+          [
+            30,
+            91,
+            10
+          ],
+          [
+            64,
+            328,
+            9
+          ],
+          [
+            24,
+            162,
+            6
+          ]
+        ]
+      },
+      "granadilla_accuracy": 0.3333333333333333
+    }
+  },
+  "size_evaluation": {
+    "n_anotadas": 0,
+    "n_muestra_marcada": 60,
+    "n_calibracion_local": 652,
+    "umbrales_locales": {
+      "Apple": {
+        "q33": 0.39473,
+        "q66": 0.52242
+      },
+      "Banana": {
+        "q33": 0.3862,
+        "q66": 0.42354
+      },
+      "Guava": {
+        "q33": 0.33176,
+        "q66": 0.39774
+      },
+      "Lime": {
+        "q33": 0.30333,
+        "q66": 0.34482
+      },
+      "Orange": {
+        "q33": 0.42344,
+        "q66": 0.55837
+      }
+    },
+    "kaggle": {
+      "distribucion_predicha": {
+        "Small": 583,
+        "Medium": 85,
+        "Large": 44
+      },
+      "proporcion_small": 0.8188202247191011
+    },
+    "local": {
+      "distribucion_predicha": {
+        "Small": 238,
+        "Medium": 229,
+        "Large": 245
+      },
+      "proporcion_small": 0.3342696629213483
+    }
+  },
+  "overfitting_table_f1_macro": {
+    "Regresión logística": {
+      "CV agrupada": 0.791133,
+      "Val": 0.849584,
+      "Val (origen distinto)": 0.768958,
+      "Test Kaggle": 0.854455,
+      "Test real": 0.343912,
+      "Brecha Val − CV": 0.058451,
+      "Brecha Test Kaggle − Test real": 0.510543
+    },
+    "SVM RBF": {
+      "CV agrupada": 0.808479,
+      "Val": 0.944776,
+      "Val (origen distinto)": 0.912066,
+      "Test Kaggle": 0.949112,
+      "Test real": 0.316598,
+      "Brecha Val − CV": 0.136297,
+      "Brecha Test Kaggle − Test real": 0.632515
+    },
+    "Random Forest": {
+      "CV agrupada": 0.813962,
+      "Val": 0.957434,
+      "Val (origen distinto)": 0.936605,
+      "Test Kaggle": 0.956789,
+      "Test real": 0.316049,
+      "Brecha Val − CV": 0.143472,
+      "Brecha Test Kaggle − Test real": 0.64074
+    },
+    "MLP": {
+      "CV agrupada": 0.800611,
+      "Val": 0.972422,
+      "Val (origen distinto)": 0.962994,
+      "Test Kaggle": 0.971506,
+      "Test real": 0.321429,
+      "Brecha Val − CV": 0.171811,
+      "Brecha Test Kaggle − Test real": 0.650076
+    }
+  },
+  "winner": {
+    "model": "mlp",
+    "name": "MLP",
+    "checkpoint": "experiments/checkpoints/fase4_mlp.joblib",
+    "criterio": "Mayor F1-macro en fotos reales entre Random Forest y MLP; desempate por F1-macro en test Kaggle",
+    "test_kaggle_f1_macro": 0.9715057124283194,
+    "test_real_f1_macro": 0.3214292781702424,
+    "test_real_por_fruta": {
+      "Apple": {
+        "fotos": 223,
+        "exactitud": 0.515695,
+        "F1-macro": 0.259671
+      },
+      "Banana": {
+        "fotos": 152,
+        "exactitud": 0.309211,
+        "F1-macro": 0.285952
+      },
+      "Guava": {
+        "fotos": 117,
+        "exactitud": 0.290598,
+        "F1-macro": 0.216846
+      },
+      "Lime": {
+        "fotos": 82,
+        "exactitud": 0.926829,
+        "F1-macro": 0.627327
+      },
+      "Orange": {
+        "fotos": 150,
+        "exactitud": 0.613333,
+        "F1-macro": 0.382434
+      }
+    }
+  },
+  "error_cases_real": [
+    {
+      "caso": 1,
+      "archivo": "banana_bad_016.jpg",
+      "fruta": "Banana",
+      "real": "Bad",
+      "predicho": "Good",
+      "confianza": 1.0,
+      "origen": "Bad_Quality_Fruits/banana_bad/banana_001_015.jpg",
+      "reflejos": 0.0,
+      "brillo": 0.41217347979545593,
+      "fondo_std": 0.0,
+      "area": 0.18621826171875
+    },
+    {
+      "caso": 2,
+      "archivo": "guava_medium_053.jpg",
+      "fruta": "Guava",
+      "real": "Mixed",
+      "predicho": "Good",
+      "confianza": 1.0,
+      "origen": "Regular_Quality_Fruits/guava_regular/IMG_3460.HEIC",
+      "reflejos": 0.005950466387906079,
+      "brillo": 0.45523369312286377,
+      "fondo_std": 0.163736954331398,
+      "area": 0.3795166015625
+    },
+    {
+      "caso": 3,
+      "archivo": "apple_good_120.jpg",
+      "fruta": "Apple",
+      "real": "Good",
+      "predicho": "Bad",
+      "confianza": 0.9999991995505945,
+      "origen": "Good_Quality_Fruits/Apple_good/IMG_3525.HEIC",
+      "reflejos": 0.0,
+      "brillo": 0.5198790431022644,
+      "fondo_std": 0.15167969465255737,
+      "area": 0.0882568359375
+    },
+    {
+      "caso": 4,
+      "archivo": "orange_good_008.jpg",
+      "fruta": "Orange",
+      "real": "Good",
+      "predicho": "Mixed",
+      "confianza": 0.9135896721714962,
+      "origen": "Good_Quality_Fruits/Orange_good/1794858713515.jpg",
+      "reflejos": 0.0011475566606101177,
+      "brillo": 0.37550830841064453,
+      "fondo_std": 0.1681259423494339,
+      "area": 0.63824462890625
+    },
+    {
+      "caso": 5,
+      "archivo": "guava_medium_022.jpg",
+      "fruta": "Guava",
+      "real": "Mixed",
+      "predicho": "Good",
+      "confianza": 1.0,
+      "origen": "Regular_Quality_Fruits/guava_regular/IMG_3429.HEIC",
+      "reflejos": 0.0,
+      "brillo": 0.42805352807044983,
+      "fondo_std": 0.1785362958908081,
+      "area": 0.3408203125
+    },
+    {
+      "caso": 6,
+      "archivo": "banana_medium_040.jpg",
+      "fruta": "Banana",
+      "real": "Mixed",
+      "predicho": "Good",
+      "confianza": 1.0,
+      "origen": "Regular_Quality_Fruits/banana_regular/IMG_3366.HEIC",
+      "reflejos": 0.0,
+      "brillo": 0.593991756439209,
+      "fondo_std": 0.18499071896076202,
+      "area": 0.1939697265625
+    }
+  ],
+  "figures": [
+    "01_confusion_test_kaggle.pdf",
+    "01_confusion_test_kaggle.png",
+    "02_confusion_test_real.pdf",
+    "02_confusion_test_real.png",
+    "03_domain_shift_features.pdf",
+    "03_domain_shift_features.png",
+    "04_size_evaluation.pdf",
+    "04_size_evaluation.png",
+    "05_overfitting_comparison.pdf",
+    "05_overfitting_comparison.png",
+    "06_error_cases_real.pdf",
+    "06_error_cases_real.png",
+    "07_error_cases_kaggle.pdf",
+    "07_error_cases_kaggle.png"
+  ]
+}
