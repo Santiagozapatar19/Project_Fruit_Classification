@@ -281,3 +281,147 @@ def assign_relative_size_labels(df_features: pd.DataFrame) -> pd.DataFrame:
 
     df["size_category"] = df.groupby("fruit", group_keys=False)["d_norm"].apply(_categorize_group)
     return df
+
+
+# ---------------------------------------------------------------------------
+# Fase 6 (Despliegue): extractor de las 31 características de los modelos.
+# Réplica exacta de `segment_foreground_fast` y `extract_full_feature_vector`
+# del cuaderno 02_Preparacion_Datos_y_Extraccion_Caracteristicas.ipynb, de modo
+# que una imagen nueva produzca el mismo vector que vieron los modelos de Fase 4.
+# ---------------------------------------------------------------------------
+
+TARGET_SIZE: Tuple[int, int] = (128, 128)
+
+# Orden exacto esperado por los checkpoints (feature_names en fase5_evaluacion_metricas.json).
+FEATURE_NAMES: List[str] = [
+    "area_ratio", "d_norm", "bbox_width_norm", "bbox_height_norm", "bbox_aspect_ratio",
+    "mean_R", "mean_G", "mean_B", "std_R", "std_G", "std_B",
+    "mean_H", "mean_S", "mean_V", "std_H", "std_S", "std_V",
+    "laplacian_var", "laplacian_abs_mean", "sobel_mean", "sobel_std",
+    "dark_pixel_ratio", "necrotic_pixel_ratio",
+] + [f"hue_bin_{i}" for i in range(8)]
+
+
+def segment_foreground_fast(rgb_norm: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    Segmenta la fruta sobre fondo uniforme (cuaderno 02).
+
+    1. Estima el color de fondo b como la mediana de una franja de borde de ancho min(h, w)/25.
+    2. Saliencia s(x) = 0.70 * ||I(x) - b||_2 / sqrt(3) + 0.30 * S(x), con S la saturación HSV.
+    3. Umbral de Otsu sobre s (piso 0.12), cierre morfológico 3x3 y relleno de huecos.
+    4. Conserva la componente conexa de mayor área; si cubre < 2 % de la imagen,
+       usa un círculo central de radio 0.35 * min(h, w) como respaldo.
+
+    Retorna (máscara booleana h x w, imagen HSV h x w x 3).
+    """
+    h, w, _ = rgb_norm.shape
+    hsv = rgb_to_hsv_array(rgb_norm)
+    b_px = max(2, min(h, w) // 25)
+    border = np.concatenate([
+        rgb_norm[:b_px, :, :].reshape(-1, 3),
+        rgb_norm[-b_px:, :, :].reshape(-1, 3),
+        rgb_norm[:, :b_px, :].reshape(-1, 3),
+        rgb_norm[:, -b_px:, :].reshape(-1, 3),
+    ], axis=0)
+    bg_rgb = np.median(border, axis=0)
+    color_dist = np.linalg.norm(rgb_norm - bg_rgb[None, None, :], axis=-1) / math.sqrt(3.0)
+    salience = np.clip(0.70 * color_dist + 0.30 * hsv[..., 1], 0.0, 1.0)
+    thresh = otsu_threshold(salience)
+    mask = salience > max(thresh, 0.12)
+    mask = ndimage.binary_closing(mask, structure=np.ones((3, 3)))
+    mask = ndimage.binary_fill_holes(mask)
+    labeled, num_feat = ndimage.label(mask)
+    if num_feat > 1:
+        sizes = ndimage.sum(mask, labeled, range(1, num_feat + 1))
+        mask = labeled == (int(np.argmax(sizes)) + 1)
+    if mask.sum() < 0.02 * (h * w):
+        yy, xx = np.ogrid[:h, :w]
+        mask = ((yy - h / 2.0) ** 2 + (xx - w / 2.0) ** 2) <= (min(h, w) * 0.35) ** 2
+    return mask, hsv
+
+
+def prepare_rgb_array(img: Image.Image) -> np.ndarray:
+    """Convierte a RGB, redimensiona a TARGET_SIZE (bilineal) y normaliza a [0, 1]."""
+    img_resized = img.convert("RGB").resize(TARGET_SIZE, Image.Resampling.BILINEAR)
+    return np.asarray(img_resized, dtype=np.float32) / 255.0
+
+
+def compute_feature_vector(rgb_arr: np.ndarray) -> Tuple[Dict[str, float], np.ndarray]:
+    """
+    Calcula las 31 características sobre una imagen ya preparada (128x128, [0, 1]).
+
+    Geometría: área relativa A = |M| / (h w) y diámetro equivalente normalizado
+    d_norm = sqrt(4 |M| / (pi h w)), es decir, el diámetro del círculo de igual área
+    dividido por el lado de la imagen. Color: media y desviación de RGB y HSV sobre la
+    fruta, más un histograma de matiz de 8 bins. Textura: varianza y media absoluta del
+    Laplaciano y media/desviación de la magnitud del gradiente de Sobel en luminancia.
+    Defectos: proporción de píxeles oscuros (V < 0.25) y necróticos (V < 0.35 y S < 0.40).
+
+    Retorna (diccionario de características, máscara de segmentación).
+    """
+    h, w, _ = rgb_arr.shape
+    mask, hsv_arr = segment_foreground_fast(rgb_arr)
+    total_px = float(h * w)
+    fruit_px = float(mask.sum())
+    area_ratio = fruit_px / total_px
+    d_norm = math.sqrt((4.0 * fruit_px) / (math.pi * total_px))
+
+    ys, xs = np.where(mask)
+    bbox_h = float(ys.max() - ys.min() + 1) / float(h)
+    bbox_w = float(xs.max() - xs.min() + 1) / float(w)
+    bbox_aspect = bbox_w / max(bbox_h, 1e-6)
+
+    fg_rgb = rgb_arr[mask]
+    fg_hsv = hsv_arr[mask]
+
+    # Histograma normalizado de matiz H (8 bins en [0, 1])
+    h_hist, _ = np.histogram(fg_hsv[:, 0], bins=8, range=(0.0, 1.0), density=False)
+    h_hist = h_hist.astype(np.float32) / max(float(h_hist.sum()), 1.0)
+
+    # Textura: Laplaciano y gradiente de Sobel en luminancia
+    gray = 0.299 * rgb_arr[..., 0] + 0.587 * rgb_arr[..., 1] + 0.114 * rgb_arr[..., 2]
+    lap = ndimage.laplace(gray)[mask]
+    gx = ndimage.sobel(gray, axis=1)
+    gy = ndimage.sobel(gray, axis=0)
+    grad_mag = np.hypot(gx, gy)[mask]
+
+    # Proporción de píxeles oscuros / necróticos
+    dark_ratio = float((fg_hsv[:, 2] < 0.25).mean())
+    necrotic_ratio = float(((fg_hsv[:, 2] < 0.35) & (fg_hsv[:, 1] < 0.40)).mean())
+
+    feats = {
+        "area_ratio": round(area_ratio, 5),
+        "d_norm": round(d_norm, 5),
+        "bbox_width_norm": round(bbox_w, 5),
+        "bbox_height_norm": round(bbox_h, 5),
+        "bbox_aspect_ratio": round(bbox_aspect, 5),
+        "mean_R": round(float(fg_rgb[:, 0].mean()), 5),
+        "mean_G": round(float(fg_rgb[:, 1].mean()), 5),
+        "mean_B": round(float(fg_rgb[:, 2].mean()), 5),
+        "std_R": round(float(fg_rgb[:, 0].std()), 5),
+        "std_G": round(float(fg_rgb[:, 1].std()), 5),
+        "std_B": round(float(fg_rgb[:, 2].std()), 5),
+        "mean_H": round(float(fg_hsv[:, 0].mean()), 5),
+        "mean_S": round(float(fg_hsv[:, 1].mean()), 5),
+        "mean_V": round(float(fg_hsv[:, 2].mean()), 5),
+        "std_H": round(float(fg_hsv[:, 0].std()), 5),
+        "std_S": round(float(fg_hsv[:, 1].std()), 5),
+        "std_V": round(float(fg_hsv[:, 2].std()), 5),
+        "laplacian_var": round(float(np.var(lap)), 6),
+        "laplacian_abs_mean": round(float(np.abs(lap).mean()), 6),
+        "sobel_mean": round(float(grad_mag.mean()), 6),
+        "sobel_std": round(float(grad_mag.std()), 6),
+        "dark_pixel_ratio": round(dark_ratio, 5),
+        "necrotic_pixel_ratio": round(necrotic_ratio, 5),
+    }
+    for b_idx in range(8):
+        feats[f"hue_bin_{b_idx}"] = round(float(h_hist[b_idx]), 5)
+    return {name: feats[name] for name in FEATURE_NAMES}, mask
+
+
+def extract_full_feature_vector(image_path: str | Path) -> Dict[str, float]:
+    """Vector de 31 características de una imagen en disco (misma firma que el cuaderno 02)."""
+    with Image.open(image_path) as img:
+        rgb_arr = prepare_rgb_array(img)
+    feats, _ = compute_feature_vector(rgb_arr)
+    return feats
